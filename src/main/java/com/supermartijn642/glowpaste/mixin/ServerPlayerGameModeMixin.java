@@ -27,24 +27,12 @@ public class ServerPlayerGameModeMixin {
         method = "destroyBlock",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/server/level/ServerLevel;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z",
-            shift = At.Shift.BEFORE
-        )
-    )
-    private void captureIsGlowing(BlockPos pos, CallbackInfoReturnable<Boolean> ci, @Share("isGlowing") LocalBooleanRef isGlowing) {
-        isGlowing.set(GlowingBlockStorage.get(this.level).has(pos.getX(), pos.getY(), pos.getZ()));
-    }
-
-    @Inject(
-        method = "destroyBlock",
-        at = @At(
-            value = "INVOKE",
             target = "Lnet/minecraft/world/item/ItemStack;mineBlock(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;)V",
             shift = At.Shift.BEFORE
         )
     )
     private void dropGlowPaste(BlockPos pos, CallbackInfoReturnable<Boolean> ci, @Share("isGlowing") LocalBooleanRef isGlowing) {
-        if(isGlowing.get())
+        if(GlowingBlockStorage.get(this.level).has(pos.getX(), pos.getY(), pos.getZ()))
             Block.popResource(this.level, pos, GlowPaste.glowPaste.getDefaultInstance());
     }
 }

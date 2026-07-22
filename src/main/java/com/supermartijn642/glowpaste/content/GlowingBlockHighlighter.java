@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.glowpaste.GlowPaste;
 import com.supermartijn642.glowpaste.GlowPasteClient;
-import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.Sheets;
@@ -15,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.EmptyBlockGetter;
@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public class GlowingBlockHighlighter {
 
-    private static final RenderStateDataKey<State> STATE_KEY = RenderStateDataKey.create(() -> GlowPaste.identifier("glowing_blocks").toString());
+    private static final ContextKey<State> STATE_KEY = new ContextKey<>(GlowPaste.identifier("glowing_blocks"));
     private static final PoseStack POSE_STACK = new PoseStack();
 
     private static int lastCameraChunkX, lastCameraChunkZ;
@@ -45,7 +45,7 @@ public class GlowingBlockHighlighter {
     public static void extractHighlights(ClientLevel level, LevelRenderState levelRenderState, Camera camera, int viewDistance){
         Player player = ClientUtils.getPlayer();
         if(!player.getMainHandItem().is(GlowPaste.glowPaste) && !player.getOffhandItem().is(GlowPaste.glowPaste)){
-            levelRenderState.setData(STATE_KEY, State.EMPTY);
+            levelRenderState.setRenderData(STATE_KEY, State.EMPTY);
             if(glowingBlocks != null)
                 glowingBlocks = null;
             return;
@@ -105,7 +105,7 @@ public class GlowingBlockHighlighter {
         }
         lastCameraChunkX = cameraChunkX;
         lastCameraChunkZ = cameraChunkZ;
-        levelRenderState.setData(STATE_KEY, new State(glowingBlocks));
+        levelRenderState.setRenderData(STATE_KEY, new State(glowingBlocks));
     }
 
     private static boolean hasChunk(ClientLevel level, int x, int z){
@@ -125,7 +125,7 @@ public class GlowingBlockHighlighter {
     }
 
     public static void submitHighlights(LevelRenderState levelRenderState, SubmitNodeCollector submitNodeCollector){
-        State state = levelRenderState.getData(STATE_KEY);
+        State state = levelRenderState.getRenderData(STATE_KEY);
         if(state == null || state.glowingBlocks.length == 0)
             return;
         PoseStack poseStack = POSE_STACK;
