@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "${mixin_minimum_version}",
+  "package": "${mod_package}.${mixin_package}",
+  "compatibilityLevel": "${mixin_compatibility_level}",
+  "mixins": [
+    "BlockGetterMixin",
+    "BlockLightEngineMixin",
+    "BlockMixin",
+    "ChunkAccessMixin",
+    "ImposterProtoChunkMixin",
+    "LevelChunkMixin",
+    "LevelMixin",
+    "PlayerChunkSenderMixin",
+    "ProtoChunkMixin",
+    "SerializableChunkDataMixin",
+    "ServerPlayerGameModeMixin"
+  ],
+  "client": [
+    "LevelRendererMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

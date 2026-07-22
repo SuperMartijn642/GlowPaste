@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "glowpaste:glowing_boundary_small"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "glowpaste:glow_paste"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "glowpaste:glowing_boundary"
+    }
+  ]
+}

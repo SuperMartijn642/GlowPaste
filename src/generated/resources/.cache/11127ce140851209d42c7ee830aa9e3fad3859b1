@@ -1,0 +1,9 @@
+// this.cache.versionId	-999999999-01-01T00:00:00	Core Lib Generators
+8616f18961bbfde673a1487468333b8edadf6393 assets/glowpaste/items/glow_paste.json
+c9e5885218a1f1513202e52ac6e570534dc57bd5 assets/glowpaste/lang/en_us.json
+917e693e544cf1ce34ce2a1e3b28ccd785b044ac assets/glowpaste/models/block/glow_highlight.json
+e4dc69480fb83f3368785ae737eeed90c5519b2e assets/glowpaste/models/block/small_glow_highlight.json
+e46dae135603e5e883f8b19b1783ae1be3a8bdfb assets/glowpaste/models/item/glow_paste.json
+a26b7f54e4563fb067311a67ed0815685a4083b7 assets/minecraft/atlases/blocks.json
+0f0b4b3caa5651b26eb03372e3d1edff2ea8ad3f data/glowpaste/advancement/recipes/glow_paste.json
+fdfacf8403d815237e208e5f3a4aba266b5a10e3 data/glowpaste/recipe/glow_paste.json
