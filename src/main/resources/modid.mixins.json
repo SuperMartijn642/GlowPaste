@@ -17,6 +17,7 @@
     "ServerPlayerGameModeMixin"
   ],
   "client": [
+    "LevelExtractorMixin",
     "LevelRendererMixin"
   ],
   "server": [],
