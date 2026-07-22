@@ -142,7 +142,7 @@ public class GlowingBlockHighlighter {
                 poseStack.translate(chunkStartX + x, y, chunkStartZ + z);
                 submitNodeCollector.submitBlockModel(
                     poseStack,
-                    Sheets.cutoutBlockSheet(),
+                    Sheets.cutoutBlockItemSheet(),
                     isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL_PARTS : GlowPasteClient.HIGHLIGHT_MODEL_PARTS,
                     new int[0],
                     LightCoordsUtil.FULL_BRIGHT,
