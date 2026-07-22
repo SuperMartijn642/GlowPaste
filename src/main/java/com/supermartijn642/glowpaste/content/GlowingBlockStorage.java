@@ -7,7 +7,6 @@ import com.supermartijn642.glowpaste.extension.LevelExtension;
 import it.unimi.dsi.fastutil.shorts.ShortArraySet;
 import it.unimi.dsi.fastutil.shorts.ShortIterator;
 import it.unimi.dsi.fastutil.shorts.ShortSet;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -87,9 +86,9 @@ public abstract class GlowingBlockStorage {
         }
 
         private void sendToPlayers(int x, int y, int z, boolean set){
-            if(!this.level.isClientSide()){
+            if(this.level instanceof ServerLevel){
                 SetGlowingPacket packet = new SetGlowingPacket(x, y, z, set);
-                for(ServerPlayer player : PlayerLookup.tracking((ServerLevel)this.level, new ChunkPos(x >> 4, z >> 4)))
+                for(ServerPlayer player : ((ServerLevel)this.level).getChunkSource().chunkMap.getPlayers(new ChunkPos(x >> 4, z >> 4), false))
                     GlowPaste.CHANNEL.sendToPlayer(player, packet);
             }
         }

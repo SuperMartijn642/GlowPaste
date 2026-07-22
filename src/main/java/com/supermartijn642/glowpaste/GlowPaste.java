@@ -12,14 +12,15 @@ import com.supermartijn642.glowpaste.content.GlowPasteItem;
 import com.supermartijn642.glowpaste.content.packets.GlowingBlocksPacket;
 import com.supermartijn642.glowpaste.content.packets.SetGlowingPacket;
 import com.supermartijn642.glowpaste.generators.*;
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
+import net.minecraftforge.fml.common.Mod;
 import org.slf4j.Logger;
 
 /**
  * Created 7/7/2020 by SuperMartijn642
  */
-public class GlowPaste implements ModInitializer {
+@Mod(GlowPaste.MODID)
+public class GlowPaste {
 
     public static final String MODID = "glowpaste";
 
@@ -33,12 +34,13 @@ public class GlowPaste implements ModInitializer {
     @RegistryEntryAcceptor(namespace = MODID, identifier = "glow_paste", registry = RegistryEntryAcceptor.Registry.ITEMS)
     public static GlowPasteItem glowPaste;
 
-    @Override
-    public void onInitialize(){
+    public GlowPaste(){
         CHANNEL.registerMessage(SetGlowingPacket.class, SetGlowingPacket::new, PacketDirection.SERVER_TO_CLIENT, true);
         CHANNEL.registerMessage(GlowingBlocksPacket.class, GlowingBlocksPacket::new, PacketDirection.SERVER_TO_CLIENT, true);
 
         register();
+        if(CommonUtils.getEnvironmentSide().isClient())
+            GlowPasteClient.register();
         registerGenerators();
     }
 
@@ -49,7 +51,7 @@ public class GlowPaste implements ModInitializer {
 
     public static void registerGenerators(){
         GeneratorRegistrationHandler handler = GeneratorRegistrationHandler.get(MODID);
-        handler.addProvider(output -> new GlowPasteFusionTextureMetadataProvider(MODID, output));
+        handler.addProvider(generator -> new GlowPasteFusionTextureMetadataProvider(MODID, generator.getPackOutput()));
         handler.addGenerator(cache -> new GlowPasteItemInfoGenerator(MODID, cache));
         handler.addGenerator(cache -> new GlowPasteLanguageGenerator(MODID, cache));
         handler.addGenerator(cache -> new GlowPasteModelGenerator(MODID, cache));

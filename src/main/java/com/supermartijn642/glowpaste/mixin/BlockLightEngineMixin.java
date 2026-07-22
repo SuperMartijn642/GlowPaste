@@ -37,7 +37,7 @@ public abstract class BlockLightEngineMixin extends LightEngine {
         method = "getEmission",
         at = @At(
             value = "INVOKE_ASSIGN",
-            target = "Lnet/minecraft/world/level/block/state/BlockState;getLightEmission()I",
+            target = "Lnet/minecraft/world/level/block/state/BlockState;getLightEmission(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)I",
             shift = At.Shift.AFTER
         )
     )

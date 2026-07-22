@@ -56,14 +56,14 @@ public class BlockMixin {
     }
 
     @Inject(
-        method = "dropResources(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;)V",
+        method = "dropResources(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Z)V",
         at = @At(
             value = "INVOKE",
             target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V",
             shift = At.Shift.AFTER
         )
     )
-    private static void dropResources(BlockState state, Level level, BlockPos pos, BlockEntity blockEntity, Entity breaker, ItemStack tool, CallbackInfo ci){
+    private static void dropResources(BlockState state, Level level, BlockPos pos, BlockEntity blockEntity, Entity breaker, ItemStack tool, boolean dropXp, CallbackInfo ci){
         GlowingBlockStorage storage = GlowingBlockStorage.get(level);
         if(storage.has(pos.getX(), pos.getY(), pos.getZ())){
             Block.popResource(level, pos, GlowPaste.glowPaste.getDefaultInstance());

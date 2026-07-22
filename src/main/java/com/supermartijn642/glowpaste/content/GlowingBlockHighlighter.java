@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.glowpaste.GlowPaste;
 import com.supermartijn642.glowpaste.GlowPasteClient;
-import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.Sheets;
@@ -30,11 +29,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public class GlowingBlockHighlighter {
 
-    private static final RenderStateDataKey<State> STATE_KEY = RenderStateDataKey.create(() -> GlowPaste.identifier("glowing_blocks").toString());
     private static final PoseStack POSE_STACK = new PoseStack();
 
     private static int lastCameraChunkX, lastCameraChunkZ;
     private static GlowingBlockStorage.ClientChunk[] glowingBlocks;
+
+    private static State state;
 
     public static void clear(){
         lastCameraChunkX = 0;
@@ -45,7 +45,7 @@ public class GlowingBlockHighlighter {
     public static void extractHighlights(ClientLevel level, LevelRenderState levelRenderState, Camera camera, int viewDistance){
         Player player = ClientUtils.getPlayer();
         if(!player.getMainHandItem().is(GlowPaste.glowPaste) && !player.getOffhandItem().is(GlowPaste.glowPaste)){
-            levelRenderState.setData(STATE_KEY, State.EMPTY);
+            state = State.EMPTY;
             if(glowingBlocks != null)
                 glowingBlocks = null;
             return;
@@ -105,7 +105,7 @@ public class GlowingBlockHighlighter {
         }
         lastCameraChunkX = cameraChunkX;
         lastCameraChunkZ = cameraChunkZ;
-        levelRenderState.setData(STATE_KEY, new State(glowingBlocks));
+        state = new State(glowingBlocks);
     }
 
     private static boolean hasChunk(ClientLevel level, int x, int z){
@@ -125,7 +125,7 @@ public class GlowingBlockHighlighter {
     }
 
     public static void submitHighlights(LevelRenderState levelRenderState, SubmitNodeCollector submitNodeCollector){
-        State state = levelRenderState.getData(STATE_KEY);
+        State state = GlowingBlockHighlighter.state;
         if(state == null || state.glowingBlocks.length == 0)
             return;
         PoseStack poseStack = POSE_STACK;
