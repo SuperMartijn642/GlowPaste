@@ -18,7 +18,9 @@
   ],
   "client": [
     "LevelExtractorMixin",
-    "LevelRendererMixin"
+    "LevelRendererMixin",
+    "MinecraftMixin",
+    "MultiPlayerGameModeMixin"
   ],
   "server": [],
   "injectors": {
