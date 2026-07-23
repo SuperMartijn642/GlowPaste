@@ -10,6 +10,7 @@ import com.supermartijn642.core.registry.RegistrationHandler;
 import com.supermartijn642.core.registry.RegistryEntryAcceptor;
 import com.supermartijn642.glowpaste.content.GlowPasteItem;
 import com.supermartijn642.glowpaste.content.packets.GlowingBlocksPacket;
+import com.supermartijn642.glowpaste.content.packets.HitGlowingPacket;
 import com.supermartijn642.glowpaste.content.packets.SetGlowingPacket;
 import com.supermartijn642.glowpaste.generators.*;
 import net.minecraft.resources.Identifier;
@@ -37,6 +38,7 @@ public class GlowPaste {
     public GlowPaste(){
         CHANNEL.registerMessage(SetGlowingPacket.class, SetGlowingPacket::new, PacketDirection.SERVER_TO_CLIENT, true);
         CHANNEL.registerMessage(GlowingBlocksPacket.class, GlowingBlocksPacket::new, PacketDirection.SERVER_TO_CLIENT, true);
+        CHANNEL.registerMessage(HitGlowingPacket.class, HitGlowingPacket::new, PacketDirection.CLIENT_TO_SERVER, true);
 
         register();
         registerGenerators();

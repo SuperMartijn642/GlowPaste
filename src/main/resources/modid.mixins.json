@@ -17,7 +17,9 @@
     "ServerPlayerGameModeMixin"
   ],
   "client": [
-    "LevelRendererMixin"
+    "LevelRendererMixin",
+    "MinecraftMixin",
+    "MultiPlayerGameModeMixin"
   ],
   "server": [],
   "injectors": {
