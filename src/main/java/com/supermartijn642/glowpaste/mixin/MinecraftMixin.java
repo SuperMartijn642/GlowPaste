@@ -8,6 +8,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,7 +50,7 @@ public class MinecraftMixin {
             if(!ClientUtils.getWorld().getWorldBorder().isWithinBounds(result.getBlockPos()))
                 return;
             if(GlowPaste.glowPaste.leftClickBlock(player, stack, result.getBlockPos(), result.getDirection()))
-                player.swing(InteractionHand.MAIN_HAND);
+                player.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
             cir.setReturnValue(true);
         }
     }

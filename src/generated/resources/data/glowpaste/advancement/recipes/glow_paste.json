@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "glowpaste:glow_paste"
+        "recipes": "glowpaste:glow_paste"
       }
     },
     "recipe_condition": {
