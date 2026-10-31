@@ -245,16 +245,16 @@ public abstract class GlowingBlockStorage {
             Section[] sections = new Section[this.sections.length];
             for(Tag t : tag){
                 CompoundTag sectionData = (CompoundTag)t;
-                int sectionIndex = sectionData.getInt("index").orElseThrow();
-                if(sectionData.getBoolean("isSparse").orElseThrow()){
+                int sectionIndex = sectionData.getInt("index");
+                if(sectionData.getBoolean("isSparse")){
                     Section section = sections[sectionIndex] = new SparseSection();
-                    long[] data = sectionData.getLongArray("data").orElseThrow();
+                    long[] data = sectionData.getLongArray("data");
                     AtomicInteger index = new AtomicInteger();
                     IntSupplier supplier = () -> {
                         int i = index.getAndIncrement();
                         return (int)(data[i / 16] >> ((i % 16) * 4)) & 15;
                     };
-                    for(int i = 0; i < sectionData.getInt("count").orElseThrow(); i++){
+                    for(int i = 0; i < sectionData.getInt("count"); i++){
                         section.set(
                             supplier.getAsInt(),
                             supplier.getAsInt(),
@@ -264,7 +264,7 @@ public abstract class GlowingBlockStorage {
                 }else{
                     DenseSection section = new DenseSection();
                     sections[sectionIndex] = section;
-                    long[] data = sectionData.getLongArray("data").orElseThrow();
+                    long[] data = sectionData.getLongArray("data");
                     if(data.length > Chunk.SECTION_BLOCKS / 64)
                         throw new IllegalArgumentException("Incorrect data size!");
                     section.data.or(BitSet.valueOf(data));

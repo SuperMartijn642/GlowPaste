@@ -5,6 +5,7 @@ import com.supermartijn642.glowpaste.content.GlowingBlockStorage;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.ChunkPos;
@@ -51,8 +52,11 @@ public class SerializableChunkDataMixin {
         SerializableChunkData serializableChunkData = ci.getReturnValue();
         if(serializableChunkData == null)
             return;
+        ListTag list = chunkData.getList(DATA_KEY, Tag.TAG_COMPOUND);
+        if(list.isEmpty())
+            list = null;
         //noinspection DataFlowIssue
-        ((SerializableChunkDataMixin)(Object)serializableChunkData).storageData = chunkData.getList(DATA_KEY).orElse(null);
+        ((SerializableChunkDataMixin)(Object)serializableChunkData).storageData = list;
     }
 
     @Inject(

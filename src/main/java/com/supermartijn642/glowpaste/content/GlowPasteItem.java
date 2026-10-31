@@ -3,7 +3,6 @@ package com.supermartijn642.glowpaste.content;
 import com.supermartijn642.core.TextComponents;
 import com.supermartijn642.core.item.BaseItem;
 import com.supermartijn642.core.item.ItemProperties;
-import com.supermartijn642.core.util.Pair;
 import com.supermartijn642.glowpaste.GlowPaste;
 import com.supermartijn642.glowpaste.content.packets.HitGlowingPacket;
 import net.minecraft.ChatFormatting;
@@ -15,10 +14,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -57,7 +54,7 @@ public class GlowPasteItem extends BaseItem {
             player.playSound(level.getBlockState(pos).getSoundType().getHitSound());
         }else{
             glowingBlocks.clear(pos.getX(), pos.getY(), pos.getZ());
-            if(!player.preventsBlockDrops())
+            if(!player.hasInfiniteMaterials())
                 Block.popResourceFromFace(level, pos, side, GlowPaste.glowPaste.getDefaultInstance());
         }
         return true;
