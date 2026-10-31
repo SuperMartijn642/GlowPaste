@@ -1,16 +1,17 @@
 package com.supermartijn642.glowpaste.content;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.glowpaste.GlowPaste;
 import com.supermartijn642.glowpaste.GlowPasteClient;
-import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.LevelRenderState;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +31,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public class GlowingBlockHighlighter {
 
-    private static final RenderStateDataKey<State> STATE_KEY = RenderStateDataKey.create(() -> GlowPaste.identifier("glowing_blocks").toString());
     private static final PoseStack POSE_STACK = new PoseStack();
 
     private static int lastCameraChunkX, lastCameraChunkZ;
@@ -42,10 +42,9 @@ public class GlowingBlockHighlighter {
         glowingBlocks = null;
     }
 
-    public static void extractHighlights(ClientLevel level, LevelRenderState levelRenderState, Camera camera, int viewDistance){
+    public static void extractHighlights(ClientLevel level, Camera camera, int viewDistance){
         Player player = ClientUtils.getPlayer();
         if(!player.getMainHandItem().is(GlowPaste.glowPaste) && !player.getOffhandItem().is(GlowPaste.glowPaste)){
-            levelRenderState.setData(STATE_KEY, State.EMPTY);
             if(glowingBlocks != null)
                 glowingBlocks = null;
             return;
@@ -105,7 +104,6 @@ public class GlowingBlockHighlighter {
         }
         lastCameraChunkX = cameraChunkX;
         lastCameraChunkZ = cameraChunkZ;
-        levelRenderState.setData(STATE_KEY, new State(glowingBlocks));
     }
 
     private static boolean hasChunk(ClientLevel level, int x, int z){
@@ -124,15 +122,15 @@ public class GlowingBlockHighlighter {
             && hasChunk(level, x + 1, z + 1);
     }
 
-    public static void submitHighlights(LevelRenderState levelRenderState, SubmitNodeCollector submitNodeCollector){
-        State state = levelRenderState.getData(STATE_KEY);
-        if(state == null || state.glowingBlocks.length == 0)
+    public static void renderHighlights(MultiBufferSource.BufferSource bufferSource, Camera camera){
+        if(glowingBlocks == null || glowingBlocks.length == 0)
             return;
         PoseStack poseStack = POSE_STACK;
         poseStack.pushPose();
-        Vec3 cameraPos = levelRenderState.cameraRenderState.pos;
+        Vec3 cameraPos = camera.getPosition();
         poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-        for(GlowingBlockStorage.ClientChunk glowingBlocks : state.glowingBlocks){
+        VertexConsumer buffer = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        for(GlowingBlockStorage.ClientChunk glowingBlocks : glowingBlocks){
             if(glowingBlocks == null)
                 continue;
             ChunkPos chunkPos = glowingBlocks.getPos();
@@ -140,22 +138,18 @@ public class GlowingBlockHighlighter {
             glowingBlocks.forEach((x, y, z, isPartialBlock) -> {
                 poseStack.pushPose();
                 poseStack.translate(chunkStartX + x, y, chunkStartZ + z);
-                submitNodeCollector.submitBlockModel(
-                    poseStack,
-                    Sheets.cutoutBlockSheet(),
-                    isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL : GlowPasteClient.HIGHLIGHT_MODEL,
+                BlockStateModel model = isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL : GlowPasteClient.HIGHLIGHT_MODEL;
+                ModelBlockRenderer.renderModel(
+                    poseStack.last(),
+                    buffer,
+                    model,
                     1, 1, 1,
                     LightTexture.FULL_BRIGHT,
-                    OverlayTexture.NO_OVERLAY,
-                    0
+                    OverlayTexture.NO_OVERLAY
                 );
                 poseStack.popPose();
             });
         }
         poseStack.popPose();
-    }
-
-    private record State(GlowingBlockStorage.ClientChunk[] glowingBlocks) {
-        static final State EMPTY = new State(new GlowingBlockStorage.ClientChunk[0]);
     }
 }

@@ -2,7 +2,7 @@ package com.supermartijn642.glowpaste.mixin;
 
 import com.supermartijn642.glowpaste.GlowPaste;
 import com.supermartijn642.glowpaste.content.GlowingBlockStorage;
-import com.supermartijn642.glowpaste.extension.ChunkAccessExtension;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.PalettedContainerFactory;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.chunk.storage.RegionStorageInfo;
 import net.minecraft.world.level.chunk.storage.SerializableChunkData;
@@ -48,7 +47,7 @@ public class SerializableChunkDataMixin {
         method = "parse",
         at = @At("RETURN")
     )
-    private static void readStorage(LevelHeightAccessor levelHeight, PalettedContainerFactory containerFactory, CompoundTag chunkData, CallbackInfoReturnable<SerializableChunkData> ci){
+    private static void readStorage(LevelHeightAccessor levelHeight, RegistryAccess registryAccess, CompoundTag chunkData, CallbackInfoReturnable<SerializableChunkData> ci){
         SerializableChunkData serializableChunkData = ci.getReturnValue();
         if(serializableChunkData == null)
             return;
