@@ -14,7 +14,7 @@ import com.supermartijn642.glowpaste.content.packets.HitGlowingPacket;
 import com.supermartijn642.glowpaste.content.packets.SetGlowingPacket;
 import com.supermartijn642.glowpaste.generators.*;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 /**
@@ -24,8 +24,8 @@ public class GlowPaste implements ModInitializer {
 
     public static final String MODID = "glowpaste";
 
-    public static Identifier identifier(String path){
-        return Identifier.fromNamespaceAndPath(MODID, path);
+    public static ResourceLocation identifier(String path){
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
     public static final Logger LOGGER = CommonUtils.getLogger(MODID);

@@ -41,7 +41,7 @@ public class GlowingBlocksPacket implements BasePacket {
     public void read(FriendlyByteBuf buffer){
         this.chunkPos = buffer.readChunkPos();
         if(buffer.readBoolean())
-            this.tag = (ListTag)buffer.readNbt(NbtAccounter.defaultQuota());
+            this.tag = (ListTag)buffer.readNbt(NbtAccounter.create(2097152));
         else
             this.tag = null;
     }

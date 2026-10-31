@@ -22,10 +22,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MinecraftMixin {
 
     @Inject(
-        method = "updateLevelInEngines(Lnet/minecraft/client/multiplayer/ClientLevel;Z)V",
+        method = "updateLevelInEngines(Lnet/minecraft/client/multiplayer/ClientLevel;)V",
         at = @At("TAIL")
     )
-    private void updateLevelInEngines(ClientLevel level, boolean stopSound, CallbackInfo ci){
+    private void updateLevelInEngines(ClientLevel level, CallbackInfo ci){
         GlowingBlockHighlighter.clear();
     }
 
