@@ -2,6 +2,7 @@ package com.supermartijn642.glowpaste.mixin;
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 import com.mojang.blaze3d.resource.ResourceHandle;
 import com.supermartijn642.glowpaste.content.GlowingBlockHighlighter;
 import net.minecraft.client.Camera;
@@ -9,10 +10,10 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
-import net.minecraft.client.renderer.state.level.LevelRenderState;
+import net.minecraft.client.renderer.state.LevelRenderState;
 import net.minecraft.util.profiling.ProfilerFiller;
-import org.joml.Matrix4fc;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,22 +39,22 @@ public class LevelRendererMixin {
     private SubmitNodeStorage submitNodeStorage;
 
     @Inject(
-        method = "extractLevel",
+        method = "renderLevel",
         at = @At("HEAD")
     )
-    private void extractLevel(DeltaTracker deltaTracker, Camera camera, float deltaPartialTick, CallbackInfo ci){
+    private void extractLevel(GraphicsResourceAllocator graphicsAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, Matrix4f cameraRotationMatrix, Matrix4f projectionMatrix, Matrix4f otherProjectionMatrix, GpuBufferSlice gpuBufferSlice, Vector4f fogColor, boolean renderSky, CallbackInfo ci){
         GlowingBlockHighlighter.extractHighlights(this.level, this.levelRenderState, camera, this.lastViewDistance);
     }
 
     @Inject(
-        method = "lambda$addMainPass$0(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lnet/minecraft/client/renderer/state/level/LevelRenderState;Lnet/minecraft/util/profiling/ProfilerFiller;Lnet/minecraft/client/renderer/chunk/ChunkSectionsToRender;Lcom/mojang/blaze3d/resource/ResourceHandle;Lcom/mojang/blaze3d/resource/ResourceHandle;Lcom/mojang/blaze3d/resource/ResourceHandle;Lcom/mojang/blaze3d/resource/ResourceHandle;Lcom/mojang/blaze3d/resource/ResourceHandle;ZLorg/joml/Matrix4fc;)V",
+        method = "lambda$addMainPass$1(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lnet/minecraft/client/renderer/state/LevelRenderState;Lnet/minecraft/util/profiling/ProfilerFiller;Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/resource/ResourceHandle;Lcom/mojang/blaze3d/resource/ResourceHandle;ZLcom/mojang/blaze3d/resource/ResourceHandle;Lcom/mojang/blaze3d/resource/ResourceHandle;)V",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/LevelRenderer;submitEntities(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/state/level/LevelRenderState;Lnet/minecraft/client/renderer/SubmitNodeCollector;)V",
+            target = "Lnet/minecraft/client/renderer/LevelRenderer;submitEntities(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/state/LevelRenderState;Lnet/minecraft/client/renderer/SubmitNodeCollector;)V",
             shift = At.Shift.BEFORE
         )
     )
-    private void submitGlowingBlockHighlights(GpuBufferSlice bufferSlice, LevelRenderState levelRenderState, ProfilerFiller profiler, ChunkSectionsToRender chunksToRender, ResourceHandle<RenderTarget> mainTarget, ResourceHandle<RenderTarget> translucentTarget, ResourceHandle<RenderTarget> itemEntityTarget, ResourceHandle<RenderTarget> entityOutlineTarget, ResourceHandle<RenderTarget> particleTarget, boolean renderOutline, Matrix4fc modelViewMatrix, CallbackInfo ci){
+    private void submitGlowingBlockHighlights(GpuBufferSlice bufferSlice, LevelRenderState levelRenderState, ProfilerFiller profiler, Matrix4f modelViewMatrix, ResourceHandle<RenderTarget> mainTarget, ResourceHandle<RenderTarget> translucentTarget, boolean renderBlockOutline, ResourceHandle<RenderTarget> itemEntityTarget, ResourceHandle<RenderTarget> entityOutlineTarget, CallbackInfo ci){
         GlowingBlockHighlighter.submitHighlights(levelRenderState, this.submitNodeStorage);
     }
 }
