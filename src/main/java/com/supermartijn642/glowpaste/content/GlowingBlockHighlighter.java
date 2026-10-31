@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -129,6 +129,7 @@ public class GlowingBlockHighlighter {
         poseStack.pushPose();
         Vec3 cameraPos = camera.getPosition();
         poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+        ModelBlockRenderer modelRenderer = ClientUtils.getMinecraft().getBlockRenderer().getModelRenderer();
         VertexConsumer buffer = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
         for(GlowingBlockStorage.ClientChunk glowingBlocks : glowingBlocks){
             if(glowingBlocks == null)
@@ -138,10 +139,11 @@ public class GlowingBlockHighlighter {
             glowingBlocks.forEach((x, y, z, isPartialBlock) -> {
                 poseStack.pushPose();
                 poseStack.translate(chunkStartX + x, y, chunkStartZ + z);
-                BlockStateModel model = isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL : GlowPasteClient.HIGHLIGHT_MODEL;
-                ModelBlockRenderer.renderModel(
+                BakedModel model = isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL : GlowPasteClient.HIGHLIGHT_MODEL;
+                modelRenderer.renderModel(
                     poseStack.last(),
                     buffer,
+                    null,
                     model,
                     1, 1, 1,
                     LightTexture.FULL_BRIGHT,

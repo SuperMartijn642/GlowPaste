@@ -41,7 +41,7 @@ public class LevelChunkMixin extends ChunkAccessMixin {
             shift = At.Shift.AFTER
         )
     )
-    private void setBlockState(BlockPos pos, BlockState state, int flags, CallbackInfoReturnable<BlockState> ci){
+    private void setBlockState(BlockPos pos, BlockState state, boolean b, CallbackInfoReturnable<BlockState> ci){
         if(!state.isAir())
             return;
         GlowingBlockStorage.Chunk storage = this.glowPasteGetGlowingBlockStorage(false);
