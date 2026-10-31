@@ -50,7 +50,7 @@ public class GlowingBlockHighlighter {
                 glowingBlocks = null;
             return;
         }
-        int cameraChunkX = camera.blockPosition().getX() >> 4, cameraChunkZ = camera.blockPosition().getZ() >> 4;
+        int cameraChunkX = camera.getBlockPosition().getX() >> 4, cameraChunkZ = camera.getBlockPosition().getZ() >> 4;
         viewDistance = Math.min(5, viewDistance);
         int chunkColumns = viewDistance * 2 + 1;
         int chunkCount = chunkColumns * chunkColumns;
