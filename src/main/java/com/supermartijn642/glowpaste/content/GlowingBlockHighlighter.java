@@ -6,14 +6,14 @@ import com.supermartijn642.glowpaste.GlowPaste;
 import com.supermartijn642.glowpaste.GlowPasteClient;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.level.LevelRenderState;
+import net.minecraft.client.renderer.state.LevelRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
-import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
@@ -96,8 +96,8 @@ public class GlowingBlockHighlighter {
                         VoxelShape shape = state.getVisualShape(EmptyBlockGetter.INSTANCE, dummyBlockPos, CollisionContext.empty());
                         if(shape.isEmpty() ||
                             ((shape.max(Direction.Axis.X) - shape.min(Direction.Axis.X)) < 0.9 &&
-                            (shape.max(Direction.Axis.Y) - shape.min(Direction.Axis.Y)) < 0.9 &&
-                            (shape.max(Direction.Axis.Z) - shape.min(Direction.Axis.Z)) < 0.9))
+                                (shape.max(Direction.Axis.Y) - shape.min(Direction.Axis.Y)) < 0.9 &&
+                                (shape.max(Direction.Axis.Z) - shape.min(Direction.Axis.Z)) < 0.9))
                             finalClientChunk.setPartialBlock(xx, yy, zz);
                     });
                 }
@@ -143,9 +143,9 @@ public class GlowingBlockHighlighter {
                 submitNodeCollector.submitBlockModel(
                     poseStack,
                     Sheets.cutoutBlockSheet(),
-                    isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL_PARTS : GlowPasteClient.HIGHLIGHT_MODEL_PARTS,
-                    new int[0],
-                    LightCoordsUtil.FULL_BRIGHT,
+                    isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL : GlowPasteClient.HIGHLIGHT_MODEL,
+                    1, 1, 1,
+                    LightTexture.FULL_BRIGHT,
                     OverlayTexture.NO_OVERLAY,
                     0
                 );

@@ -3,7 +3,6 @@ package com.supermartijn642.glowpaste.content.packets;
 import com.supermartijn642.core.network.BasePacket;
 import com.supermartijn642.core.network.PacketContext;
 import com.supermartijn642.glowpaste.content.GlowingBlockStorage;
-import com.supermartijn642.glowpaste.extension.ChunkAccessExtension;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.network.FriendlyByteBuf;
@@ -49,7 +48,7 @@ public class GlowingBlocksPacket implements BasePacket {
 
     @Override
     public void handle(PacketContext context){
-        ChunkAccess chunk = context.getWorld().getChunk(this.chunkPos.x(), this.chunkPos.z(), ChunkStatus.FULL, false);
+        ChunkAccess chunk = context.getWorld().getChunk(this.chunkPos.x, this.chunkPos.z, ChunkStatus.FULL, false);
         if(chunk == null)
             return;
         GlowingBlockStorage.Chunk storage = GlowingBlockStorage.get(chunk, this.tag != null);

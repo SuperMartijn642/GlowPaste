@@ -5,10 +5,10 @@
       "id": "glowpaste:glow_paste"
     },
     "title": {
-      "translate": "glowpaste.advancement.recipes/glow_paste.title"
+      "translate": "glowpaste.advancement.recipes/misc/glow_paste.title"
     },
     "description": {
-      "translate": "glowpaste.advancement.recipes/glow_paste.description"
+      "translate": "glowpaste.advancement.recipes/misc/glow_paste.description"
     },
     "frame": "task",
     "show_toast": false,

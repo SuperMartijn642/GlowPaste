@@ -1,12 +1,9 @@
 package com.supermartijn642.glowpaste;
 
 import com.supermartijn642.core.registry.ClientRegistrationHandler;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created 7/1/2021 by SuperMartijn642
@@ -15,17 +12,11 @@ import java.util.List;
 public class GlowPasteClient {
 
     public static final String HIGHLIGHT_MODEL_LOCATION = "block/glow_highlight", SMALL_HIGHLIGHT_MODEL_LOCATION = "block/small_glow_highlight";
-    public static List<BlockStateModelPart> HIGHLIGHT_MODEL_PARTS = List.of(), SMALL_HIGHLIGHT_MODEL_PARTS = List.of();
+    public static BlockStateModel HIGHLIGHT_MODEL, SMALL_HIGHLIGHT_MODEL;
 
     public GlowPasteClient(){
         ClientRegistrationHandler handler = ClientRegistrationHandler.get(GlowPaste.MODID);
-        handler.registerBlockStateModelConsumer(HIGHLIGHT_MODEL_LOCATION, model -> {
-            //noinspection DataFlowIssue,deprecation
-            model.collectParts(null, HIGHLIGHT_MODEL_PARTS = new ArrayList<>(1));
-        });
-        handler.registerBlockStateModelConsumer(SMALL_HIGHLIGHT_MODEL_LOCATION, model -> {
-            //noinspection DataFlowIssue,deprecation
-            model.collectParts(null, SMALL_HIGHLIGHT_MODEL_PARTS = new ArrayList<>(1));
-        });
+        handler.registerBlockModelConsumer(HIGHLIGHT_MODEL_LOCATION, model -> HIGHLIGHT_MODEL = model);
+        handler.registerBlockModelConsumer(SMALL_HIGHLIGHT_MODEL_LOCATION, model -> SMALL_HIGHLIGHT_MODEL = model);
     }
 }
