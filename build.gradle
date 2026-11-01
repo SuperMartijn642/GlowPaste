@@ -81,7 +81,7 @@ neoForge {
 
         data {
             ideName = "Neo Data"
-            clientData()
+            data()
             //noinspection GroovyAssignabilityCheck
             programArguments.addAll(["--mod", mod_id])
             programArguments.addAll(["--all"])

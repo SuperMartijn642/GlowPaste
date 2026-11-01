@@ -130,6 +130,7 @@ public class GlowingBlockHighlighter {
         Vec3 cameraPos = camera.getPosition();
         poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
         ModelBlockRenderer modelRenderer = ClientUtils.getMinecraft().getBlockRenderer().getModelRenderer();
+        BakedModel highlightModel = GlowPasteClient.getHighlightModel(), smallHighlightModel = GlowPasteClient.getSmallHighlightModel();
         VertexConsumer buffer = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
         for(GlowingBlockStorage.ClientChunk glowingBlocks : glowingBlocks){
             if(glowingBlocks == null)
@@ -139,7 +140,7 @@ public class GlowingBlockHighlighter {
             glowingBlocks.forEach((x, y, z, isPartialBlock) -> {
                 poseStack.pushPose();
                 poseStack.translate(chunkStartX + x, y, chunkStartZ + z);
-                BakedModel model = isPartialBlock ? GlowPasteClient.SMALL_HIGHLIGHT_MODEL : GlowPasteClient.HIGHLIGHT_MODEL;
+                BakedModel model = isPartialBlock ? smallHighlightModel : highlightModel;
                 modelRenderer.renderModel(
                     poseStack.last(),
                     buffer,
