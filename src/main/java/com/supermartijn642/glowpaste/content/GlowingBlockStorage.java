@@ -62,14 +62,14 @@ public abstract class GlowingBlockStorage {
         @Override
         public boolean has(int x, int y, int z){
             GlowingBlockStorage storage = this.getChunk(x, z, false);
-            return storage != null && storage.has(x % 16, y, z % 16);
+            return storage != null && storage.has(x & 15, y, z & 15);
         }
 
         @Override
         public void set(int x, int y, int z){
             GlowingBlockStorage storage = this.getChunk(x, z, true);
             if(storage != null){
-                storage.set(x % 16, y, z % 16);
+                storage.set(x & 15, y, z & 15);
                 this.sendToPlayers(x, y, z, true);
                 this.updateLighting(x, y, z);
             }
@@ -79,7 +79,7 @@ public abstract class GlowingBlockStorage {
         public void clear(int x, int y, int z){
             GlowingBlockStorage storage = this.getChunk(x, z, false);
             if(storage != null){
-                storage.clear(x % 16, y, z % 16);
+                storage.clear(x & 15, y, z & 15);
                 this.sendToPlayers(x, y, z, false);
                 this.updateLighting(x, y, z);
             }
@@ -127,7 +127,7 @@ public abstract class GlowingBlockStorage {
         }
 
         protected static int blockToSectionY(int y){
-            return (y % 16 + 16) % 16;
+            return y & 15;
         }
 
         @Override
