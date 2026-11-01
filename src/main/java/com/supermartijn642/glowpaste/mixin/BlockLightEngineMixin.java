@@ -3,7 +3,6 @@ package com.supermartijn642.glowpaste.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.supermartijn642.glowpaste.content.GlowingBlockStorage;
-import com.supermartijn642.glowpaste.extension.ChunkAccessExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,7 +50,7 @@ public abstract class BlockLightEngineMixin extends LightEngine {
         GlowingBlockStorage.Chunk storage = GlowingBlockStorage.get((ChunkAccess)chunk, false);
         if(storage == null)
             return;
-        if(storage.has(this.dummyPos.getX() % 16, this.dummyPos.getY(), this.dummyPos.getZ() % 16))
+        if(storage.has(this.dummyPos.getX() & 15, this.dummyPos.getY(), this.dummyPos.getZ() & 15))
             lightEmission.set(15);
     }
 
