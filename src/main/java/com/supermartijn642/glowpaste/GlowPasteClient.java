@@ -1,19 +1,30 @@
 package com.supermartijn642.glowpaste;
 
+import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.core.registry.ClientRegistrationHandler;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Created 7/1/2021 by SuperMartijn642
  */
 public class GlowPasteClient {
 
-    public static final String HIGHLIGHT_MODEL_LOCATION = "block/glow_highlight", SMALL_HIGHLIGHT_MODEL_LOCATION = "block/small_glow_highlight";
-    public static BakedModel HIGHLIGHT_MODEL, SMALL_HIGHLIGHT_MODEL;
+    public static final ResourceLocation HIGHLIGHT_MODEL_LOCATION = GlowPaste.identifier("block/glow_highlight");
+    public static final ResourceLocation SMALL_HIGHLIGHT_MODEL_LOCATION = GlowPaste.identifier("block/small_glow_highlight");
 
     public static void register(){
         ClientRegistrationHandler handler = ClientRegistrationHandler.get(GlowPaste.MODID);
-        handler.registerModelConsumer(HIGHLIGHT_MODEL_LOCATION, model -> HIGHLIGHT_MODEL = model);
-        handler.registerModelConsumer(SMALL_HIGHLIGHT_MODEL_LOCATION, model -> SMALL_HIGHLIGHT_MODEL = model);
+        handler.registerModel(HIGHLIGHT_MODEL_LOCATION);
+        handler.registerModel(SMALL_HIGHLIGHT_MODEL_LOCATION);
+    }
+
+    public static BakedModel getHighlightModel(){
+        return ClientUtils.getMinecraft().getModelManager().getModel(new ModelResourceLocation(HIGHLIGHT_MODEL_LOCATION, ""));
+    }
+
+    public static BakedModel getSmallHighlightModel(){
+        return ClientUtils.getMinecraft().getModelManager().getModel(new ModelResourceLocation(SMALL_HIGHLIGHT_MODEL_LOCATION, ""));
     }
 }
