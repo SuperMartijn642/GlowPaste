@@ -45,7 +45,7 @@ public class LevelChunkMixin extends ChunkAccessMixin {
         if(!state.isAir())
             return;
         GlowingBlockStorage.Chunk storage = this.glowPasteGetGlowingBlockStorage(false);
-        if(storage == null || !storage.has(pos.getX() % 16, pos.getY(), pos.getZ() % 16))
+        if(storage == null || !storage.has(pos.getX() & 15, pos.getY(), pos.getZ() & 15))
             return;
         GlowingBlockStorage.get(this.level).clear(pos.getX(), pos.getY(), pos.getZ());
     }
