@@ -108,7 +108,7 @@ public class GlowingBlockHighlighter {
 
     private static boolean hasChunk(ClientLevel level, int x, int z){
         ChunkAccess chunk = level.getChunk(x, z, ChunkStatus.FULL, false);
-        return chunk != null && level.getLightEngine().lightOnInColumn(SectionPos.getZeroNode(SectionPos.asLong(x, 0, z)));
+        return chunk != null && level.getLightEngine().lightOnInSection(SectionPos.of(x, 0, z));
     }
 
     public static boolean doesChunkHaveAllNeighbors(ClientLevel level, int x, int z){

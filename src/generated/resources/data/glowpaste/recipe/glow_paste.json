@@ -6,8 +6,12 @@
     "GGG"
   ],
   "key": {
-    "S": "#c:slime_balls",
-    "G": "#c:dusts/glowstone"
+    "S": {
+      "tag": "c:slime_balls"
+    },
+    "G": {
+      "tag": "c:dusts/glowstone"
+    }
   },
   "result": {
     "id": "glowpaste:glow_paste",

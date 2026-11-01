@@ -113,7 +113,7 @@ public abstract class GlowingBlockStorage {
         public Chunk(ChunkAccess chunk, int sections){
             this.chunk = chunk;
             this.pos = chunk.getPos();
-            this.minY = this.chunk.getMinY();
+            this.minY = this.chunk.getMinBuildHeight();
             this.sections = new Section[sections];
         }
 
@@ -149,7 +149,7 @@ public abstract class GlowingBlockStorage {
                 section.forEach(dense::set);
                 this.sections[(y - this.minY) / SECTION_SIZE] = dense;
             }
-            this.chunk.markUnsaved();
+            this.chunk.setUnsaved(true);
         }
 
         @Override
@@ -164,11 +164,11 @@ public abstract class GlowingBlockStorage {
                 section.forEach(sparse::set);
                 this.sections[(y - this.minY) / SECTION_SIZE] = sparse;
             }
-            this.chunk.markUnsaved();
+            this.chunk.setUnsaved(true);
         }
 
         public void forEach(Consumer consumer){
-            int minY = this.chunk.getMinY();
+            int minY = this.chunk.getMinBuildHeight();
             for(int i = 0; i < this.sections.length; i++){
                 Section section = this.sections[i];
                 if(section == null)
@@ -300,7 +300,7 @@ public abstract class GlowingBlockStorage {
         }
 
         public void forEach(Consumer consumer){
-            int minY = this.chunk.getMinY();
+            int minY = this.chunk.getMinBuildHeight();
             for(int i = 0; i < this.sections.length; i++){
                 Section section = this.sections[i];
                 if(section == null)
