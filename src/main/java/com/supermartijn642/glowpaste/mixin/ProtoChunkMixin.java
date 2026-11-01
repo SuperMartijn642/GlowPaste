@@ -27,8 +27,8 @@ public class ProtoChunkMixin extends ChunkAccessMixin {
         if(!state.isAir())
             return;
         GlowingBlockStorage.Chunk storage = this.glowPasteGetGlowingBlockStorage(false);
-        if(storage == null || !storage.has(pos.getX() % 16, pos.getY(), pos.getZ() % 16))
+        if(storage == null || !storage.has(pos.getX() & 15, pos.getY(), pos.getZ() & 15))
             return;
-        storage.clear(pos.getX() % 16, pos.getY(), pos.getZ() % 16);
+        storage.clear(pos.getX() & 15, pos.getY(), pos.getZ() & 15);
     }
 }
