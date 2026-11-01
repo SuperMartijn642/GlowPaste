@@ -12,7 +12,10 @@ import com.supermartijn642.glowpaste.content.GlowPasteItem;
 import com.supermartijn642.glowpaste.content.packets.GlowingBlocksPacket;
 import com.supermartijn642.glowpaste.content.packets.HitGlowingPacket;
 import com.supermartijn642.glowpaste.content.packets.SetGlowingPacket;
-import com.supermartijn642.glowpaste.generators.*;
+import com.supermartijn642.glowpaste.generators.GlowPasteFusionTextureMetadataProvider;
+import com.supermartijn642.glowpaste.generators.GlowPasteLanguageGenerator;
+import com.supermartijn642.glowpaste.generators.GlowPasteModelGenerator;
+import com.supermartijn642.glowpaste.generators.GlowPasteRecipeGenerator;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -52,7 +55,6 @@ public class GlowPaste implements ModInitializer {
     public static void registerGenerators(){
         GeneratorRegistrationHandler handler = GeneratorRegistrationHandler.get(MODID);
         handler.addProvider(output -> new GlowPasteFusionTextureMetadataProvider(MODID, output));
-        handler.addGenerator(cache -> new GlowPasteItemInfoGenerator(MODID, cache));
         handler.addGenerator(cache -> new GlowPasteLanguageGenerator(MODID, cache));
         handler.addGenerator(cache -> new GlowPasteModelGenerator(MODID, cache));
         handler.addGenerator(cache -> new GlowPasteRecipeGenerator(MODID, cache));
