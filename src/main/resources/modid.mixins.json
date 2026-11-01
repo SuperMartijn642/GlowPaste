@@ -8,12 +8,12 @@
     "BlockLightEngineMixin",
     "BlockMixin",
     "ChunkAccessMixin",
+    "ChunkSerializerMixin",
     "ImposterProtoChunkMixin",
     "LevelChunkMixin",
     "LevelMixin",
     "PlayerChunkSenderMixin",
     "ProtoChunkMixin",
-    "SerializableChunkDataMixin",
     "ServerPlayerGameModeMixin"
   ],
   "client": [
