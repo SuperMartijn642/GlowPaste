@@ -42,7 +42,7 @@ public class LevelChunkMixin extends ChunkAccessMixin {
         )
     )
     private void setBlockState(BlockPos pos, BlockState state, boolean b, CallbackInfoReturnable<BlockState> ci){
-        if(!state.isAir())
+        if(!state.isAir() && (state.getFluidState().isEmpty() || state.getFluidState().createLegacyBlock() != state))
             return;
         GlowingBlockStorage.Chunk storage = this.glowPasteGetGlowingBlockStorage(false);
         if(storage == null || !storage.has(pos.getX() & 15, pos.getY(), pos.getZ() & 15))
