@@ -365,8 +365,8 @@ public abstract class GlowingBlockStorage {
             for(int i = this.data.nextSetBit(0); i >= 0; i = this.data.nextSetBit(i + 1)){
                 consumer.consume(
                     i & 15,
-                    (i >> 4) & 15,
-                    (i >> 8) & 15
+                    (i >> 8) & 15,
+                    (i >> 4) & 15
                 );
             }
         }
