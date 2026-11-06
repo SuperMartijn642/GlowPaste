@@ -351,7 +351,7 @@ public abstract class GlowingBlockStorage {
 
         @Override
         public int size(){
-            return this.data.length();
+            return this.data.cardinality();
         }
 
         @Override
