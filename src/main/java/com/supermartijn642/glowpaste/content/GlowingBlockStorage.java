@@ -219,7 +219,7 @@ public abstract class GlowingBlockStorage {
                 sectionData.putBoolean("isSparse", section.isSparse());
                 if(section.isSparse()){
                     sectionData.putInt("count", size);
-                    int longs = Math.ceilDiv(size * 3, 8);
+                    int longs = Math.ceilDiv(size * 3, 16); // each coordinate takes 4 bits, so each long can pack 8 * 8 / 4 = 16 coordinates
                     long[] data = new long[longs];
                     AtomicInteger index = new AtomicInteger(0);
                     IntConsumer consumer = x -> {
