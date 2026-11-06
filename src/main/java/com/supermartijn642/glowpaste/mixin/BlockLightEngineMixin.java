@@ -69,7 +69,7 @@ public abstract class BlockLightEngineMixin extends LightEngine {
         if(storage == null)
             return;
         storage.forEach((x, y, z) -> {
-            this.dummyPos.set(x, y, z);
+            this.dummyPos.set(pos.getMinBlockX() + x, y, pos.getMinBlockZ() + z);
             BlockState state = chunk.getBlockState(this.dummyPos);
             this.enqueueIncrease(this.dummyPos.asLong(), LightEngine.QueueEntry.increaseLightFromEmission(15, isEmptyShape(state)));
         });
