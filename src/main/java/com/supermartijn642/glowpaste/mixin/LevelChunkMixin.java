@@ -1,7 +1,6 @@
 package com.supermartijn642.glowpaste.mixin;
 
 import com.supermartijn642.glowpaste.content.GlowingBlockStorage;
-import com.supermartijn642.glowpaste.extension.ChunkAccessExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -44,7 +43,7 @@ public class LevelChunkMixin extends ChunkAccessMixin {
         )
     )
     private void setBlockState(BlockPos pos, BlockState state, @Block.UpdateFlags int flags, CallbackInfoReturnable<BlockState> ci) {
-        if(!state.isAir())
+        if(!state.isAir() && (state.getFluidState().isEmpty() || state.getFluidState().createLegacyBlock() != state))
             return;
         GlowingBlockStorage.Chunk storage = this.glowPasteGetGlowingBlockStorage(false);
         if(storage == null || !storage.has(pos.getX() & 15, pos.getY(), pos.getZ() & 15))
